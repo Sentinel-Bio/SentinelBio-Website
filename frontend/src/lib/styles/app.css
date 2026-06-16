@@ -1,0 +1,187 @@
+/* ========================================================================
+   Sentinel Bio — theme system
+   Two themes: neutral (vintage paper with dark purple accents) + biomarine
+   (deep-sea, the one from the memory game). Theme set via [data-theme].
+   ====================================================================== */
+@import 'molstar/lib/mol-plugin-ui/skin/dark.scss';
+
+:root {
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'EB Garamond', 'Iowan Old Style', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ─── Neutral (default) — vintage paper + dark purple ─────────────── */
+[data-theme='neutral'] {
+  --bg-base: #f3ead8;           /* aged paper */
+  --bg-raised: #ede2c8;
+  --bg-inset: #f8f1e0;
+  --bg-accent: #2a1d3d;          /* dark purple */
+  --bg-accent-soft: #4a3a6b;
+
+  --fg: #2b2419;                 /* nearly-black ink */
+  --fg-muted: #5b4f3e;
+  --fg-dim: #8a7d6b;
+  --fg-inverse: #f3ead8;
+
+  --accent: #6a4ba3;             /* muted purple */
+  --accent-bright: #8d6fcc;
+  --accent-dim: rgba(106, 75, 163, 0.15);
+
+  --border: rgba(43, 36, 25, 0.12);
+  --border-strong: rgba(43, 36, 25, 0.25);
+
+  --noise-opacity: 0.04;
+}
+
+/* ─── Neutral DARK variant — activated by [data-appearance='dark'] ───── */
+[data-theme='neutral'][data-appearance='dark'] {
+  --bg-base: #15121c;           /* deep purple-black */
+  --bg-raised: #1e1a2a;
+  --bg-inset: #0f0d15;
+  --bg-accent: #2a1d3d;
+  --bg-accent-soft: #4a3a6b;
+
+  --fg: #e8e3d3;                 /* warm off-white */
+  --fg-muted: #a89f8c;
+  --fg-dim: #6b6479;
+  --fg-inverse: #15121c;
+
+  --accent: #b896e3;             /* lighter purple for contrast on dark */
+  --accent-bright: #d4bcf0;
+  --accent-dim: rgba(184, 150, 227, 0.15);
+
+  --border: rgba(232, 227, 211, 0.08);
+  --border-strong: rgba(232, 227, 211, 0.18);
+
+  --noise-opacity: 0.04;
+}
+
+/* ─── Biomarine — preserves the existing deep-sea aesthetic ─────────── */
+[data-theme='biomarine'] {
+  --bg-base: #070e16;
+  --bg-raised: #122336;
+  --bg-inset: #0b1622;
+  --bg-accent: #122336;
+  --bg-accent-soft: #1a3048;
+
+  --fg: #eef2f5;
+  --fg-muted: #8ba3b8;
+  --fg-dim: #5a7085;
+  --fg-inverse: #070e16;
+
+  --accent: #4fd6c8;             /* bioluminescent cyan */
+  --accent-bright: #7ef0e3;
+  --accent-dim: rgba(79, 214, 200, 0.15);
+
+  --border: rgba(232, 236, 240, 0.08);
+  --border-strong: rgba(232, 236, 240, 0.16);
+
+  --noise-opacity: 0.035;
+}
+
+/* ─── Reset + base ─────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; height: 100%; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--bg-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-root {
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--fg);
+  position: relative;
+}
+
+/* Paper/ocean texture — subtle grain overlay */
+.app-root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: var(--noise-opacity);
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='0.5'/></svg>");
+}
+
+[data-theme='biomarine'] .app-root::before,
+[data-theme='neutral'][data-appearance='dark'] .app-root::before {
+  mix-blend-mode: overlay;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--fg);
+  margin: 0;
+  letter-spacing: -0.01em;
+  font-weight: 420;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-bright); }
+
+button {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.7em 1.3em;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+  border-radius: 2px;
+}
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+button.primary {
+  background: var(--accent);
+  color: var(--fg-inverse);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+button.primary:hover:not(:disabled) {
+  background: var(--accent-bright);
+  border-color: var(--accent-bright);
+}
+
+.shell {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--fg);
+  font-weight: 500;
+}
+.brand em { color: var(--accent); font-style: italic; }
