@@ -13,9 +13,15 @@ Built with SvelteKit + FastAPI + Supabase.
 
 ## Run
 
-Each package has its own README. Quick start:
+Quick start:
 
+```bash
+cd backend/
+
+uv run fastapi dev app/main.py
+uv run python -m app.tool_worker
 ```
-cd backend && uv sync && uv run fastapi dev app/main.py
-cd frontend && pnpm install && pnpm dev
+```bash
+cd frontend/
+pnpm dev
 ```
